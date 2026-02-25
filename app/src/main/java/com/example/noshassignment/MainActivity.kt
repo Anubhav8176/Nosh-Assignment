@@ -9,10 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.noshassignment.presentation.sharedComposable.DishCard
 import com.example.noshassignment.presentation.sharedComposable.PreviousDishCard
+import com.example.noshassignment.presentation.sharedComposable.TabRow
 import com.example.noshassignment.ui.theme.NoshAssignmentTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,13 +27,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             NoshAssignmentTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    PreviousDishCard(
-                        imageUrl = "https://nosh-assignment.s3.ap-south-1.amazonaws.com/paneer-tikka.jpg",
-                        dishName = "Jeera Rice",
-                        date = "Yesterday",
-                        time = "4:33 pm",
-                        rating = null,
-                        modifier = Modifier.padding(innerPadding)
+                    var selectedTab by remember { mutableStateOf("Recommended") }
+
+                    TabRow(
+                        modifier = Modifier.padding(innerPadding),
+                        tabs = listOf("Recommended", "Favourites"),
+                        selectedTab = selectedTab,
+                        onTabSelected = { selectedTab = it }
                     )
                 }
             }
