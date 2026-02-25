@@ -11,7 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.noshassignment.presentation.DishCard
+import com.example.noshassignment.presentation.sharedComposable.DishCard
+import com.example.noshassignment.presentation.sharedComposable.PreviousDishCard
 import com.example.noshassignment.ui.theme.NoshAssignmentTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,15 +22,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             NoshAssignmentTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    DishCard(
-                        dishId = "1",
-                        dishName = "Jeera Rice",
+                    PreviousDishCard(
                         imageUrl = "https://nosh-assignment.s3.ap-south-1.amazonaws.com/paneer-tikka.jpg",
-                        isVeg = true,
-                        isPublished = true,
-                        time = "30",
-                        dishCategory = "Rice",
-                        ingredientCategory = "Rice",
+                        dishName = "Jeera Rice",
+                        date = "Yesterday",
+                        time = "4:33 pm",
+                        rating = null,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
