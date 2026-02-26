@@ -27,32 +27,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             NoshAssignmentTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    var selectedTab by remember { mutableStateOf("Recommended") }
+                    var selectedTab by remember { mutableStateOf("Ingredients") }
 
                     TabRow(
                         modifier = Modifier.padding(innerPadding),
-                        tabs = listOf("Recommended", "Favourites"),
+                        tabs = listOf("Dish", "Ingredients"),
                         selectedTab = selectedTab,
                         onTabSelected = { selectedTab = it }
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NoshAssignmentTheme {
-        Greeting("Android")
     }
 }
