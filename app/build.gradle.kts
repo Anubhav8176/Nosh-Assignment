@@ -60,4 +60,8 @@ dependencies {
     implementation(libs.coil.network.okhttp)
 
     implementation(libs.androidx.material.icons.extended)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
 }
