@@ -49,7 +49,7 @@ fun PreviousDishCard(
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth(0.7f)
+            .width(280.dp)
             .wrapContentHeight(),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),

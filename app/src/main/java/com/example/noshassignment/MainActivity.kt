@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.noshassignment.presentation.core.HomeScreen
 import com.example.noshassignment.presentation.sharedComposable.DishCard
 import com.example.noshassignment.presentation.sharedComposable.PreviousDishCard
 import com.example.noshassignment.presentation.sharedComposable.TabRow
@@ -26,16 +27,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NoshAssignmentTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    var selectedTab by remember { mutableStateOf("Ingredients") }
-
-                    TabRow(
-                        modifier = Modifier.padding(innerPadding),
-                        tabs = listOf("Dish", "Ingredients"),
-                        selectedTab = selectedTab,
-                        onTabSelected = { selectedTab = it }
-                    )
-                }
+                HomeScreen()
             }
         }
     }
