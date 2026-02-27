@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.noshassignment.R
+import com.example.noshassignment.network.model.DishResponseItem
 import com.example.noshassignment.presentation.sharedComposable.DishCard
 import com.example.noshassignment.presentation.sharedComposable.PreviousDishCard
 import com.example.noshassignment.presentation.sharedComposable.TabRow
@@ -46,13 +47,13 @@ import kotlin.concurrent.timer
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    dishViewModel: DishViewModel = DishViewModel()
+    dishViewModel: DishViewModel
 ) {
-
     var searchingText by remember { mutableStateOf("") }
     val dishes by dishViewModel.dishData.collectAsState()
-    val isLoading by dishViewModel.isLoading.collectAsState()
-    val errorMessage by dishViewModel.errorMessage.collectAsState()
+    var selectedTab by remember { mutableStateOf("Recommended") }
+    var selectedSection by remember { mutableStateOf("Ingredients") }
+    var selectedCategory by remember { mutableStateOf<String?>(null) }
 
     Column(
         modifier = modifier
@@ -63,8 +64,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         TopIconBar(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             checkedIcons = listOf(
                 R.drawable.ic_spoon,
                 R.drawable.ic_catalog,
@@ -82,25 +82,16 @@ fun HomeScreen(
             query = searchingText,
             onQueryChange = { searchingText = it }
         )
-        Spacer(modifier.height(10.dp))
-
-        var selectedTab by remember { mutableStateOf("Recommended") }
 
         TabRow(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             tabs = listOf("Recommended", "Favourites"),
             selectedTab = selectedTab,
             onTabSelected = { selectedTab = it }
         )
 
-        Spacer(modifier.height(10.dp))
-
-        LazyRow(
-            modifier = modifier
-                .fillMaxWidth()
-        ) {
-            items(dishes){dish->
+        LazyRow(modifier = Modifier.fillMaxWidth()) {
+            items(dishes) { dish ->
                 DishCard(
                     dishId = dish.dishId,
                     dishName = dish.dishName,
@@ -110,17 +101,12 @@ fun HomeScreen(
                     time = dish.Time,
                     dishCategory = dish.dishCategory,
                     ingredientCategory = dish.IngredientCategory,
-                    modifier = modifier.padding(horizontal = 5.dp)
+                    modifier = Modifier.padding(horizontal = 5.dp)
                 )
             }
         }
 
-        Spacer(modifier.height(10.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             Image(
                 painter = painterResource(id = R.drawable.ic_cooking_history),
                 contentDescription = "Previously cooked",
@@ -134,42 +120,38 @@ fun HomeScreen(
             )
         }
 
-        Spacer(modifier.height(10.dp))
-
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            items(10){
+        LazyRow(modifier = Modifier.fillMaxWidth()) {
+            items(10) {
                 PreviousDishCard(
                     imageUrl = "https://nosh-assignment.s3.ap-south-1.amazonaws.com/paneer-tikka.jpg",
                     dishName = "Jeera Rice",
                     date = "Yesterday",
                     time = "4:33 pm",
                     rating = null,
-                    modifier = Modifier
-                        .padding(horizontal = 10.dp)
+                    modifier = Modifier.padding(horizontal = 10.dp)
                 )
             }
         }
 
-        Spacer(modifier.height(10.dp))
-
-        var selectedSection by remember { mutableStateOf("Ingredients") }
-
         TabRow(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             tabs = listOf("Dish", "Ingredients"),
             selectedTab = selectedSection,
-            onTabSelected = { selectedSection = it }
+            onTabSelected = {
+                selectedSection = it
+                selectedCategory = null
+            }
         )
 
         IngredientFilterSection(
+            dishes = dishes,
+            selectedSection = selectedSection,
+            selectedCategory = selectedCategory,
+            onCategoryClicked = { category ->
+                selectedCategory = if (selectedCategory == category) null else category
+            },
             modifier = Modifier.fillMaxWidth()
         )
-
-
     }
 }
 

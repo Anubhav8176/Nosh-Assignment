@@ -20,14 +20,19 @@ import com.example.noshassignment.presentation.sharedComposable.DishCard
 import com.example.noshassignment.presentation.sharedComposable.PreviousDishCard
 import com.example.noshassignment.presentation.sharedComposable.TabRow
 import com.example.noshassignment.ui.theme.NoshAssignmentTheme
+import com.example.noshassignment.viewmodel.DishViewModel
 
 class MainActivity : ComponentActivity() {
+
+    val dishViewModel: DishViewModel = DishViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             NoshAssignmentTheme {
-                HomeScreen()
+                HomeScreen(
+                    dishViewModel = dishViewModel
+                )
             }
         }
     }
