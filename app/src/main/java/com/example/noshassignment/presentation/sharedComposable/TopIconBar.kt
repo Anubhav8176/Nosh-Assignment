@@ -35,9 +35,8 @@ fun TopIconBar(
     Row(
         modifier = modifier
             .fillMaxWidth(1f)
-            .clip(RoundedCornerShape(15.dp))
             .background(color = Color.White)
-            .padding(vertical = 8.dp),
+            .padding(horizontal = 10.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {

@@ -63,20 +63,6 @@ fun HomeScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        TopIconBar(
-            modifier = Modifier.fillMaxWidth(),
-            checkedIcons = listOf(
-                R.drawable.ic_spoon,
-                R.drawable.ic_catalog,
-                R.drawable.ic_third,
-                R.drawable.ic_forth
-            ),
-            plainIcons = listOf(
-                R.drawable.ic_wifi,
-                R.drawable.ic_mode_off,
-                R.drawable.ic_mode_off
-            )
-        )
 
         DishSearchBar(
             query = searchingText,
