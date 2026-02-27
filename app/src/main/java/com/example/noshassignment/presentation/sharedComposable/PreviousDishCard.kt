@@ -143,16 +143,3 @@ fun PreviousDishCard(
     }
 }
 
-@Preview
-@Composable
-fun PreviousDishCardPreview(modifier: Modifier = Modifier) {
-    NoshAssignmentTheme{
-        PreviousDishCard(
-            imageUrl = "https://nosh-assignment.s3.ap-south-1.amazonaws.com/paneer-tikka.jpg",
-            dishName = "Jeera Rice",
-            date = "Yesterday",
-            time = "4:33 pm",
-            rating = null
-        )
-    }
-}

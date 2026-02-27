@@ -80,19 +80,3 @@ fun TabRow(
         }
     }
 }
-
-
-@Preview
-@Composable
-fun TabRowPreview(modifier: Modifier = Modifier) {
-    NoshAssignmentTheme {
-        var selectedTab by remember { mutableStateOf("Recommended") }
-
-        TabRow(
-            tabs = listOf("Recommended", "Favourites"),
-            selectedTab = selectedTab,
-            onTabSelected = { selectedTab = it }
-        )
-    }
-
-}

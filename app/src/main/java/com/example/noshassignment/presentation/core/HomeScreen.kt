@@ -173,11 +173,3 @@ fun HomeScreen(
     }
 }
 
-
-@Preview
-@Composable
-fun HomeScreenPreview(){
-    NoshAssignmentTheme {
-        HomeScreen()
-    }
-}
