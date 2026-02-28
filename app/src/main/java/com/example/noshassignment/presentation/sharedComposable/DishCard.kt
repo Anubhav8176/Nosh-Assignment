@@ -2,6 +2,7 @@ package com.example.noshassignment.presentation.sharedComposable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -49,6 +51,8 @@ fun DishCard(
     time: String,
     dishCategory: String,
     ingredientCategory: String,
+    rating: String? = null,
+    reviewCount: String? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -60,47 +64,78 @@ fun DishCard(
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            Box(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = Color.Transparent)
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
+                    .padding(horizontal = 8.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
                     painter = painterResource(
                         id = if (isVeg) R.drawable.ic_veg else R.drawable.ic_non_veg
                     ),
                     contentDescription = if (isVeg) "Vegetarian" else "Non-Vegetarian",
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .size(24.dp)
+                    modifier = Modifier.size(24.dp)
                 )
-
                 Icon(
                     imageVector = Icons.Outlined.FavoriteBorder,
                     contentDescription = "Add to favorites",
                     tint = Color.Gray,
                     modifier = Modifier
-                        .align(Alignment.TopEnd)
                         .size(24.dp)
-                        .clickable { /* Handle favorite toggle */ }
-                )
-
-                AsyncImage(
-                    model = imageUrl,
-                    contentDescription = dishName,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(200.dp)
-                        .clip(CircleShape)
-                        .align(Alignment.Center)
+                        .clickable { }
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = dishName,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(160.dp)
+                    .clip(CircleShape)
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            if (!rating.isNullOrBlank()) {
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50.dp))
+                        .border(
+                            width = 1.dp,
+                            color = Color(0xFFE65100),
+                            shape = RoundedCornerShape(50.dp)
+                        )
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = "Rating",
+                            tint = Color(0xFFE65100),
+                            modifier = Modifier.size(14.dp)
+                        )
+                        Text(
+                            text = if (!reviewCount.isNullOrBlank()) "$rating ($reviewCount)" else rating,
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = Color(0xFFE65100),
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 12.sp
+                            )
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+            }
 
             Text(
                 text = dishName,
@@ -133,7 +168,7 @@ fun DishCard(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = time,
+                    text = "${time}min",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
@@ -155,5 +190,3 @@ fun DishCard(
         }
     }
 }
-
-

@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.noshassignment.R
+import com.example.noshassignment.presentation.core.DishSearchBar
 
 
 @Composable
@@ -34,7 +35,7 @@ fun TopIconBar(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth(1f)
+            .wrapContentWidth()
             .background(color = Color.White)
             .padding(horizontal = 10.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -56,8 +57,6 @@ fun TopIconBar(
                 BadgedIcon(iconRes = iconRes)
             }
         }
-
-        Spacer(Modifier.weight(1f))
 
         plainIcons.forEach { iconRes ->
             Box(

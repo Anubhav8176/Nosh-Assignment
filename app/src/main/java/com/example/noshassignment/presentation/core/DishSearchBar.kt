@@ -40,7 +40,6 @@ fun DishSearchBar(
             fontSize = 15.sp
         ),
         modifier = modifier
-            .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .border(
                 width = 1.dp,
