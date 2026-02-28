@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,9 +22,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -66,21 +72,27 @@ fun MainScreen(dishViewModel: DishViewModel) {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            NoshNavigationRail(
-                navItems = navItems,
-                selectedItem = selectedItem,
-                onItemSelected = { selectedItem = it }
-            )
+            Box(modifier = Modifier
+                .width(80.dp)
+                .fillMaxHeight()
+            ) {
+                NoshNavigationRail(
+                    navItems = navItems,
+                    selectedItem = selectedItem,
+                    onItemSelected = { selectedItem = it }
+                )
+            }
 
-            Divider(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(1.dp),
-                color = Color(0xFFE0E0E0)
+            VerticalDivider(
+                modifier = Modifier.fillMaxHeight(),
+                color = Color(0xFFE0E0E0),
+                thickness = 1.dp
             )
 
             HomeScreen(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
                 dishViewModel = dishViewModel
             )
         }
@@ -97,82 +109,88 @@ fun NoshNavigationRail(
     val topItems = navItems.take(5)
     val bottomItems = navItems.drop(5)
 
-    Column(
+    NavigationRail(
         modifier = modifier
             .fillMaxHeight()
-            .width(80.dp)
-            .background(Color.White)
-            .padding(vertical = 16.dp)
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+        containerColor = Color.White,
     ) {
+        Spacer(modifier = Modifier.height(8.dp))
+
         topItems.forEachIndexed { index, item ->
-            NoshNavItem(
-                item = item,
-                isSelected = selectedItem == index,
-                onClick = { onItemSelected(index) }
+            NavigationRailItem(
+                selected = selectedItem == index,
+                onClick = { onItemSelected(index) },
+                icon = {
+                    Image(
+                        painter = painterResource(id = item.selectedIcon as Int),
+                        contentDescription = item.title,
+                        modifier = Modifier.size(24.dp),
+                        colorFilter = ColorFilter.tint(
+                            if (selectedItem == index) Color(0xFFE65100)
+                            else Color(0xFF9E9E9E)
+                        )
+                    )
+                },
+                label = {
+                    Text(
+                        text = item.title,
+                        fontSize = 10.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
+                colors = NavigationRailItemDefaults.colors(
+                    selectedIconColor = Color(0xFFE65100),
+                    selectedTextColor = Color(0xFFE65100),
+                    unselectedIconColor = Color(0xFF9E9E9E),
+                    unselectedTextColor = Color(0xFF9E9E9E),
+                    indicatorColor = Color.Transparent
+                )
             )
-            Spacer(modifier = Modifier.height(8.dp))
         }
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+
+        HorizontalDivider(
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
             color = Color(0xFFE0E0E0)
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.weight(1f))
 
         bottomItems.forEachIndexed { index, item ->
             val actualIndex = topItems.size + index
-            NoshNavItem(
-                item = item,
-                isSelected = selectedItem == actualIndex,
-                onClick = { onItemSelected(actualIndex) }
+            NavigationRailItem(
+                selected = selectedItem == actualIndex,
+                onClick = { onItemSelected(actualIndex) },
+                icon = {
+                    Image(
+                        painter = painterResource(id = item.selectedIcon as Int),
+                        contentDescription = item.title,
+                        modifier = Modifier.size(24.dp),
+                        colorFilter = ColorFilter.tint(
+                            if (selectedItem == actualIndex) Color(0xFFE65100)
+                            else Color(0xFF9E9E9E)
+                        )
+                    )
+                },
+                label = {
+                    Text(
+                        text = item.title,
+                        fontSize = 10.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
+                colors = NavigationRailItemDefaults.colors(
+                    selectedIconColor = Color(0xFFE65100),
+                    selectedTextColor = Color(0xFFE65100),
+                    unselectedIconColor = Color(0xFF9E9E9E),
+                    unselectedTextColor = Color(0xFF9E9E9E),
+                    indicatorColor = Color.Transparent
+                )
             )
-            Spacer(modifier = Modifier.height(8.dp))
         }
-    }
-}
 
-@Composable
-fun NoshNavItem(
-    item: NavigationItem,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(
-        modifier = modifier
-            .width(72.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .clickable { onClick() }
-            .padding(vertical = 8.dp, horizontal = 4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Image(
-            painter = painterResource(
-                id = if (isSelected) item.selectedIcon as Int else item.unselectedIcon as Int
-            ),
-            contentDescription = item.title,
-            modifier = Modifier.size(26.dp),
-            colorFilter = if (isSelected) {
-                ColorFilter.tint(Color(0xFFE65100))
-            } else {
-                ColorFilter.tint(Color(0xFF9E9E9E))
-            }
-        )
-        Text(
-            text = item.title,
-            style = MaterialTheme.typography.labelSmall.copy(
-                color = if (isSelected) Color(0xFFE65100) else Color(0xFF9E9E9E),
-                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                fontSize = 10.sp
-            ),
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+        Spacer(modifier = Modifier.height(8.dp))
     }
 }
